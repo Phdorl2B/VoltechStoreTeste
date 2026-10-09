@@ -1,101 +1,121 @@
-const cards = document.getElementById("cards");
 
-let quantidadeProdutos = 14;
+const vitrine = document.getElementById("vitrine");
 
-function mostrarProdutos(lista) {
+// Configuração das seções da loja
+const secoes = [
+    {
+        titulo: "Ofertas",
+        tipo: "Ofertas"
+    },
+    {
+        titulo: "Placas-mãe",
+        categoria: "Placa-mãe"
+    },
+    {
+        titulo: "Placas de vídeo",
+        categoria: "Placa de Video"
+    },
+    {
+        titulo: "Todos os produtos",
+        tipo: "todos"
+    }
+];
 
-    cards.innerHTML = "";
+// Cria uma seção com seu próprio carrossel
+function criarSecao(secao) {
+    const section = document.createElement("section");
 
-    const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+    section.innerHTML = `
+        <h2 class="text-2xl font-bold mb-5">
+            ${secao.titulo}
+        </h2>
 
-    lista.slice(0, quantidadeProdutos).forEach(function (produto) {
+        <div class="flex gap-4 overflow-x-auto pb-4 select-none
+                    cursor-grab active:cursor-grabbing"
+             style="scrollbar-width: none;">
+        </div>
+    `;
 
-        const favoritado = favoritos.includes(produto.id);
+    const carrossel = section.querySelector("div");
 
-        cards.innerHTML += `
-        
-        <div 
-            onclick="window.location.href='produto.html?id=${produto.id}'"
-            class="relative gap-4 flex flex-col bg-white rounded-2xl mt-4 shadow-lg m-0 p-3 w-[10em]  md:w-full md:m-1 hover:scale-105 transition duration-300 cursor-pointer"
-        >
+    let arrastando = false;
+    let inicioX = 0;
+    let scrollInicial = 0;
+    let houveArraste = false;
 
-            <button
-                onclick="favoritar(event, '${produto.id}')"
-                class="absolute top-4 right-4 z-10 text-3xl transition ${
-                    favoritado ? "text-red-500" : "text-gray-400"
-                }"
-            >
-                ${favoritado ? "♥" : "♡"}
-            </button>
+    // Arrastar com o mouse
+    carrossel.addEventListener("mousedown", event => {
+        if (event.button !== 0) return;
 
-            <img 
-                class="w-full h-40 sm:h-48 md:h-64 object-contain rounded-xl"
-                src="${produto.imagem}"
-            >
-
-            
-            <h2 class="text-2xl font-light line-clamp-1">
-                ${produto.titulo}
-            </h2>
-
-
-            <h2 class="text-2xl font-semibold mt-4">
-                ${produto.preco}
-            </h2>
-
-                    
-           <button
-                onclick="adicionarCarrinho(event, '${produto.id}')"
-                class="w-full mt-auto bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition cursor-pointer">
-                 Adicionar ao carrinho
-            </button>
-        `;
+        arrastando = true;
+        houveArraste = false;
+        inicioX = event.pageX;
+        scrollInicial = carrossel.scrollLeft;
     });
-}
 
+    window.addEventListener("mousemove", event => {
+        if (!arrastando) return;
 
-function favoritar(event, id) {
+        const distancia = event.pageX - inicioX;
 
-    event.stopPropagation();
+        if (Math.abs(distancia) > 5) {
+            houveArraste = true;
+            carrossel.scrollLeft = scrollInicial - distancia;
+        }
+    });
 
-    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+    window.addEventListener("mouseup", () => {
+        arrastando = false;
+    });
 
-    if (favoritos.includes(id)) {
+    window.addEventListener("blur", () => {
+        arrastando = false;
+    });
 
-        favoritos = favoritos.filter(function (favorito) {
-            return favorito !== id;
-        });
+    carrossel.addEventListener("dragstart", event => {
+        event.preventDefault();
+    });
 
-    } else {
+    // Seleciona os produtos da seção
+    let lista = produtos;
 
-        favoritos.push(id);
+    if (secao.tipo === "Ofertas") {
+        const ids = ["003", "004", "001"];
 
+        lista = produtos.filter(produto =>
+            ids.includes(produto.id)
+        );
+    } else if (secao.categoria) {
+        lista = produtos.filter(produto =>
+            produto.categoria.toLowerCase() ===
+            secao.categoria.toLowerCase()
+        );
     }
 
-    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    // Cria os cards usando cards.js
+    lista.forEach(produto => {
+        const card = criarCard(produto);
 
-    mostrarProdutos(produtos);
+        // Evita abrir o produto se o usuário estiver arrastando
+        card.querySelector("button").addEventListener("click", event => {
+            if (houveArraste) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }, true);
+
+        carrossel.appendChild(card);
+    });
+
+    // Só exibe se houver produtos
+    if (lista.length > 0) {
+        vitrine.appendChild(section);
+    }
 }
 
-
-mostrarProdutos(produtos);
-
-
-const verMais = document.getElementById("verMais");
-
-verMais.addEventListener("click", function () {
-
-    quantidadeProdutos += 10;
-
-    mostrarProdutos(produtos);
-
-});
-
-function adicionarCarrinho(event, id) {
-
-    event.stopPropagation();
-
-    console.log("Produto adicionado ao carrinho:", id);
-
+// Monta todas as seções
+if (typeof produtos !== "undefined") {
+    secoes.forEach(criarSecao);
+} else {
+    console.error("Não foi possível encontrar a lista de produtos.");
 }
-
