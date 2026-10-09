@@ -5,35 +5,111 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tailwind v4 Teste</title>
   <link href="./dist/output.css" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+ 
 </head>
-<body class="bg-gray-200 zoom-90%">
+<body class="bg-gray-100 zoom-90">
 
   <header class="bg-black text-white p-3">
     <div><a class="text-white" href="index2.html"></a></div>
-    <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 p-4">
 
-      <h1 class="text-3xl font-bold"><a href="index.html">VoltechStore</a></h1>
+    <h1 class="hidden md:flex text-2xl sm:text-3xl font-bold">
+        <a href="index.html">VoltechStore</a>
+    </h1>
 
-      <nav class="flex gap-6">
-        <a href="#" class="hover:text-gray-300">Combos</a>
-        <a href="#" class="hover:text-gray-300">Produtos</a>
-        <a href="#" class="hover:text-gray-300">Carrinho</a>
-      </nav>
+    <div id="categoriasMobile" class="md:hidden relative">
+    <button
+        id="categoriasBtnMobile"
+        class="flex items-center gap-2 text-white font-semibold mb-4"
+    >
+        <span class="flex flex-col gap-0.5">
+            <span class="w-5 h-0.5 bg-gray-400"></span>
+            <span class="w-5 h-0.5 bg-gray-400"></span>
+            <span class="w-5 h-0.5 bg-gray-400"></span>
+        </span>
 
+    </button>
+
+
+     <!--CategoriaMobile-->
+    <div
+        id="categoriasMenuMobile"
+        class="hidden absolute left-0 top-full mt-2 w-56 bg-white text-black rounded-lg shadow-xl overflow-hidden z-50"
+    >
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Notebook">
+            Notebooks
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Pc, Computadores">
+            Computadores
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Placa de Video">
+            Placas de Vídeo
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Processador">
+            Processadores
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Memoria Ram">
+            Memórias RAM
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Ssd">
+            SSDs
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Console">
+            Consoles
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Celular">
+            Celulares
+        </a>
+
+        <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+           data-categoria="Controle, Perifericos">
+            Periféricos
+        </a>
     </div>
-     <div class="relative px-4 h-[32px]">
+</div>
+
+    <div class="flex justify-center mb-6 mt-6 w-full text-black ">
+    <input
+        id="pesquisa"
+        type="text"
+        placeholder="Pesquisar produto..."
+        class="w-full max-w-md px-4 py-3 border rounded-xl outline-none bg-white" >
+</div>
+
+   <nav class="flex gap-4 md:gap-10">
+  <i data-lucide="heart" class="w-5 h-5 md:w-6 md:h-6  cursor-pointer"></i>
+ <i data-lucide="shopping-cart" class="w-5 h-5 md:w-6 md:h-6  cursor-pointer"></i>  
+    <i data-lucide="user" class="w-5 h-5 md:w-6 md:h-6 cursor-pointer"></i>
+</nav>
+
+</div>
+    </div>
+    <div id="categoriasDesktop" class="hidden md:block relative px-4 ">
 
         <button
             id="categoriasBtn"
-            class="flex items-center gap-2 text-white font-semibold hover:text-gray-300"
-        >
+            class="flex items-center gap-2 text-white font-semibold hover:text-gray-300 ">
 
             <!-- 3 tracinhos -->
-            <span class="flex flex-col gap-[4px]">
-                <span class="w-5 h-[2px] bg-gray-400"></span>
-                <span class="w-5 h-[2px] bg-gray-400"></span>
-                <span class="w-5 h-[2px] bg-gray-400"></span>
+            <span class="flex flex-col gap-0.5">
+                <span class="w-4 h-0.5 bg-gray-400"></span>
+                <span class="w-4 h-0.5 bg-gray-400"></span>
+                <span class="w-4 h-0.5 bg-gray-400"></span>
             </span>
 
             <span>Categorias</span>
@@ -42,80 +118,98 @@
 
         <!---Menu de Categorias--->
         <div
-            id="categoriasMenu"
-            class="hidden absolute left-4 top-full mt-3 w-56 bg-white text-black rounded-lg shadow-xl overflow-hidden z-50"
-        >
+    id="categoriasMenu"
+    class="hidden absolute left-4 top-full mt-3 w-56 bg-white text-black rounded-lg shadow-xl overflow-hidden z-50"
+>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Notebook">
+        Notebooks
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                Notebooks
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Pc, Computadores">
+        Computadores
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                Computadores
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Placa de Video">
+        Placas de Vídeo
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                Placas de Vídeo
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Processador">
+        Processadores
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                Processadores
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Memoria Ram">
+        Memórias RAM
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                Memórias RAM
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Ssd">
+        SSDs
+    </a>
 
-            <a
-                href="#"
-                class="block px-5 py-3 hover:bg-gray-200"
-            >
-                SSDs
-            </a>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Console">
+        Consoles
+    </a>
 
-        </div>
+    <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Celular">
+        Celulares
+    </a>
+
+     <a class="block px-5 py-3 hover:bg-gray-100 cursor-pointer"
+       data-categoria="Controle, Perifericos">
+        Perifericos
+    </a>
+</div>
 
     </div>
 
-</header>
   </header>
+  
 
- <main class="grid sm:grid-cols-2md: grid-cols-3 lg:grid-cols4 lg:zoom-95 lg:gap-102 xl:grid-cols-5 gap-6 justify-items-center p-6" id="cards">
- 
+<!---Banner--->
 
-
-
-           
-
-   
-
-
-
-
+  <div class="hidden md:block">
+<img
+    class="w-[98%] mx-auto h-auto mt-4 object-contain rounded-2xl"
+    src="https://res.cloudinary.com/m68oprsk/image/upload/v1789431209/ChatGPT_Image_14_de_set._de_2026_3.png"
+    alt="Promoção VoltechStore"
+>
 </div>
 
+<div class="block md:hidden">
+<img
+  class="w-full h-32 "
+  src="https://res.cloudinary.com/m68oprsk/image/upload/v1790882781/ChatGPT_Image_1_de_out._de_2026_16_23_48.png" alt="">
+  </div>
+
+ <!--Cards-->
+
+<main
+    id="cards"
+    class="grid m-0 w-full gap-4 p-0 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4 xl:grid-cols-7 justify-items-center md:p-6 ">
+
+    
+</main>
 
 
-  </main>
+<!--CardsMobile-->
+<Section>
 
-<div class="pointer-click flex">
-  <btn class="text-2xl font-bold mt-8 bg-black text-white m-auto rounded-full p-6 cursor-pointer">Ver mais</btn>
-</div>
+  <div id=recomendados class="flex transition-transform duration-300 hover:translate-x-4">
+  
+  </div>
+
+</Section>
+
+<button id="verMais" class="cursor-pointer items-center mx-auto flex bg-black text-white p-6 rounded-2xl text-lg">
+    Ver mais
+</button>
 
 <footer class="bg-black text-gray-300 mt-16">
   <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -185,5 +279,16 @@
 
 <script src="js/produtos.js" ></script>
 <script src="js/index.js"></script>
+<script src="js/pesquisa.js"> </script>
+<script src="js/categorias.js"></script>
+
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
 </body>
 </html>
